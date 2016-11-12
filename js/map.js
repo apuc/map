@@ -49,25 +49,25 @@ function Map(){
 
     this.printPlacemarks = function(){
         this.options.placemarks.forEach(function(a){
-            var r = ymaps.geoQuery(ymaps.geocode(a.address)).slice(0,1);
-            r.then(function(){
-                if(a.options){
-                    a.options.forEach(function(opt){
-                        r.setOptions(opt.key, opt.value);
-                    });
-                }
-                if(a.properties){
-                    a.properties.forEach(function(prop){
-                        r.setProperties(prop.key, prop.value);
-                    });
-                }
-                r.addToMap(this.map);
-            }.bind(this));
+            this.addPlacemark(a.address, a.properties, a.options);
         }.bind(this));
     }
 
     this.addPlacemark = function(address, properties, options){
-
+        var r = ymaps.geoQuery(ymaps.geocode(address)).slice(0,1);
+        r.then(function(){
+            if(options){
+                options.forEach(function(opt){
+                    r.setOptions(opt.key, opt.value);
+                });
+            }
+            if(properties){
+                properties.forEach(function(prop){
+                    r.setProperties(prop.key, prop.value);
+                });
+            }
+            r.addToMap(this.map);
+        }.bind(this));
     }
 
     this.getMapBox = function(){
